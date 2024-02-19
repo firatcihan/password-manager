@@ -27,7 +27,7 @@ def password_generate():
     
     password_girdi.delete(0, END)
     password_girdi.insert(0, temp)
-    pyperclip.copy(temp)     ### üretilen şifreyi kopyalıyor böylece ctrl v yapabiliyoruz
+    pyperclip.copy(temp)     ### copy generated password
 # ------ SEARCH PASSWORD ----- #
 def find_password():
     website = website_girdi.get()
