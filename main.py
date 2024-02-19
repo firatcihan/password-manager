@@ -4,6 +4,7 @@ from tkinter import messagebox
 import random
 import pyperclip   ### copy generated password
 string_list = ""
+PLACEHOLDER_EMAİL = "yourmail@hotmail.com"  ### your email
 # ------- PASSWORD GENERATOR ------- #
 def password_generate():
     sayilar= ["0","1","2","3","4","5","6","7","8","9"]
@@ -32,13 +33,15 @@ def password_generate():
 def find_password():
     website = website_girdi.get()
     try:
-        with open("100daysofcode/password manager/data.json" ,"r") as dosyake:
-            datake = json.load(dosyake)
+        with open("data.json" ,"r") as dosya1:
+            data1 = json.load(dosya1)
     except FileNotFoundError:
             messagebox.showinfo(title="Hata", message=f"aradiginiz {website} isimli website bulunamadi")
+    except json.JSONDecodeError:
+        messagebox.showinfo(title="Hata", message=f"aradiginiz {website} isimli website bulunamadi")
     else:
-        if website in datake:
-            messagebox.showinfo(title=website, message=f"email/username: {datake[website]["email"]}\npassword: {datake[website]["sifre"]}")
+        if website in data1:
+            messagebox.showinfo(title=website, message=f"email/username: {data1[website]["email"]}\npassword: {data1[website]["sifre"]}")
         else:
             messagebox.showinfo(title="Hata", message=f"aradiginiz {website} isimli website bulunamadi")
 # ---- SAVE PASSWORD ------ #
@@ -57,15 +60,18 @@ def save_password():
         messagebox.showwarning(title="hatali kayit" , message="tum bosluklar eksiksiz olarak doldurulmalidir")
     else:
         try:
-            with open("100daysofcode/password manager/data.json" ,"r") as dosya:
+            with open("data.json" ,"r") as dosya:
                 data = json.load(dosya)   ### dosya read komutu
+        except json.JSONDecodeError:
+            with open("data.json", "w") as dosya:
+                json.dump(data_dic, dosya , indent=4)
         except FileNotFoundError:
-            with open("100daysofcode/password manager/data.json", "w") as dosya:
+            with open("data.json", "w") as dosya:
                 json.dump(data_dic, dosya , indent=4)
         else:
             data.update(data_dic)
 
-            with open("100daysofcode/password manager/data.json" ,"w") as dosya:
+            with open("data.json" ,"w") as dosya:
                 json.dump(data, dosya, indent=4) ### write komutu
         finally:
             website_girdi.delete(0, END)
@@ -78,7 +84,7 @@ win.config(padx=50, pady=50)
 
 canvas = Canvas(width=200, height=200, highlightthickness=0)
 
-first_image = PhotoImage(file="100daysofcode/password manager/logo.png")
+first_image = PhotoImage(file="logo.png")
 canvas.create_image(100, 100 , image=first_image)
 canvas.grid(column=1, row=0)
 
@@ -101,7 +107,7 @@ website_girdi.focus()
 
 username_girdi = Entry(width=35)
 username_girdi.grid(column=1, row=2, columnspan=2)
-username_girdi.insert(0, "firatcihan18@hotmail.com")
+username_girdi.insert(0, PLACEHOLDER_EMAİL)
 
 password_girdi = Entry(width=21)
 password_girdi.grid(column=1, row=3)
