@@ -2,7 +2,7 @@ from tkinter import *
 import json
 from tkinter import messagebox
 import random
-import pyperclip   ### üretilen şifreyi kopyalayabilmemize yariyor böylece ctrl v yapabiliyoruz
+import pyperclip   ### copy generated password
 string_list = ""
 # ------- PASSWORD GENERATOR ------- #
 def password_generate():
